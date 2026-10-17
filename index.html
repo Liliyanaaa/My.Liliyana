@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Liliyana De Zenith (v3)</title>
+<style>
+:root{--bg:#14132b;--card:#1d1c3a;--line:#32305c;--tx:#f3f1ff;--mut:#a5a2cf;--gold:#f0c674;--blue:#1d9bf0}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding-bottom:48px}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.banner{position:relative;cursor:pointer;height:230px;background:linear-gradient(135deg,#43358f,#173f73);overflow:hidden;border-radius:0 0 18px 18px}
+.banner video,.banner img,.av video,.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.edit{position:absolute;z-index:2;background:rgba(10,10,25,.7);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+.banner .edit{right:12px;top:12px}
+.head{pointer-events:none;display:flex;gap:16px;align-items:flex-end;padding:0 20px;margin-top:-52px;position:relative;z-index:3}
+.head>*{pointer-events:auto}
+.av{cursor:pointer;position:relative;width:112px;height:112px;flex:none;border-radius:50%;overflow:hidden;border:4px solid var(--bg);background:#3a3880}
+.av .edit{left:50%;bottom:6px;transform:translateX(-50%);padding:3px 10px;font-size:12px}
+h1{font:700 28px/1.2 Georgia,"Times New Roman",serif;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vb{width:24px;height:24px;flex:none}
+.sub{color:var(--mut);font-size:14px}
+.stats{display:flex;gap:28px;padding:20px 20px 0}
+.stats b{display:block;font:700 22px Georgia,serif}
+.stats span{color:var(--mut);font-size:14px}
+.tabs{display:flex;gap:8px;padding:22px 20px 0;overflow-x:auto}
+.tabs button{white-space:nowrap;background:none;border:1px solid var(--line);border-radius:999px;padding:8px 18px}
+.tabs button[aria-selected=true]{background:var(--gold);color:#241c05;border-color:var(--gold);font-weight:600}
+section{padding:18px 20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h2{font:700 18px Georgia,serif;margin-bottom:8px}
+.card p{white-space:pre-wrap;max-width:68ch}
+textarea{width:100%;min-height:130px;background:var(--bg);color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
+.row{display:flex;gap:8px;margin-top:12px}
+.btn{background:var(--gold);color:#241c05;border:0;border-radius:999px;padding:8px 18px;font-weight:600}
+.btn.alt{background:none;color:var(--tx);border:1px solid var(--line)}
+.frame{width:100%;height:78vh;min-height:480px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.note{color:var(--mut);font-size:14px;margin-top:10px}
+[hidden]{display:none!important}
+@media(max-width:520px){.banner{height:170px}.av{width:92px;height:92px}h1{font-size:23px}.stats{gap:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner" id="banner"><button class="edit" data-t="banner">Ganti banner</button></div>
+  <div class="head">
+    <div class="av" id="av"><button class="edit" data-t="av">Ganti</button></div>
+    <div style="padding-bottom:6px">
+      <h1>Liliyana De Zenith
+        <svg class="vb" viewBox="0 0 24 24" role="img" aria-label="Terverifikasi"><title>Terverifikasi</title><g fill="#1d9bf0"><circle cx="12" cy="12" r="8"/><circle cx="18.5" cy="12" r="4.2"/><circle cx="16.6" cy="16.6" r="4.2"/><circle cx="12" cy="18.5" r="4.2"/><circle cx="7.4" cy="16.6" r="4.2"/><circle cx="5.5" cy="12" r="4.2"/><circle cx="7.4" cy="7.4" r="4.2"/><circle cx="12" cy="5.5" r="4.2"/><circle cx="16.6" cy="7.4" r="4.2"/></g><path fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7.6 12.4l3 3 5.8-6.2"/></svg>
+      </h1>
+      <div class="sub">Akun terverifikasi</div>
+    </div>
+  </div>
+  <div class="stats">
+    <div><b title="100.000.000">100M</b><span>Pengikut</span></div>
+    <div><b>0</b><span>Mengikuti</span></div>
+    <div><b>0</b><span>Teman</span></div>
+  </div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <section id="pro">
+    <div class="card">
+      <h2>Tentang</h2>
+      <p id="bio"></p>
+      <div id="ed" hidden>
+        <textarea id="ta" maxlength="600" aria-label="Deskripsi profil"></textarea>
+        <div class="row"><button class="btn" id="sv">Simpan deskripsi</button><button class="btn alt" id="cn">Batal</button></div>
+      </div>
+      <div class="row" id="eb"><button class="btn alt" id="eo">Edit deskripsi</button></div>
+      <p class="note">Foto profil dan banner bisa diganti dengan video atau gambar. Nama tidak bisa diubah.</p>
+    </div>
+  </section>
+
+  <section id="sites" hidden></section>
+</div>
+<input type="file" id="pick" accept="video/*,image/*" hidden>
+
+<script>
+// Blokir semua pop up dari halaman ini
+const realOpen=window.open.bind(window);window.open=function(){return null};
+const DEF="Halaman profil resmi Liliyana De Zenith. Di sini kamu bisa melihat profil terverifikasi, mengganti foto profil dan banner dengan video, mengatur deskripsi, dan menonton anime lewat menu Nonton Anime.";
+const $=s=>document.querySelector(s);
+const db=new Promise((ok,no)=>{const r=indexedDB.open('profil-liliyana',1);r.onupgradeneeded=()=>r.result.createObjectStore('k');r.onsuccess=()=>ok(r.result);r.onerror=no});
+const get=async k=>{try{const d=await db;return await new Promise(ok=>{const q=d.transaction('k').objectStore('k').get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>ok()})}catch(e){}};
+const put=async(k,v)=>{try{const d=await db;await new Promise(ok=>{const t=d.transaction('k','readwrite');t.objectStore('k').put(v,k);t.oncomplete=ok;t.onerror=ok})}catch(e){alert('Penyimpanan browser tidak tersedia. Perubahan hilang saat halaman ditutup.')}};
+function show(box,blob){
+  box.querySelectorAll(':scope>video,:scope>img').forEach(e=>e.remove());
+  if(!blob)return;
+  const isV=blob.type.startsWith('video'),e=document.createElement(isV?'video':'img');
+  e.src=URL.createObjectURL(blob);
+  if(isV){e.autoplay=e.loop=e.muted=e.playsInline=true;e.play&&e.play().catch(()=>{})}
+  box.prepend(e);
+}
+let target=null;
+[['banner','#banner'],['av','#av']].forEach(([t,q])=>$(q).onclick=()=>{target=t;$('#pick').value='';$('#pick').click()});
+$('#pick').onchange=async e=>{
+  const f=e.target.files[0];if(!f||!target)return;
+  show(target==='banner'?$('#banner'):$('#av'),f);
+  await put(target,f);
+};
+(async()=>{
+  show($('#banner'),await get('banner'));
+  show($('#av'),await get('av'));
+  $('#bio').textContent=(await get('bio'))||DEF;
+})();
+$('#eo').onclick=()=>{$('#ta').value=$('#bio').textContent;$('#ed').hidden=false;$('#eb').hidden=true;$('#ta').focus()};
+$('#cn').onclick=()=>{$('#ed').hidden=true;$('#eb').hidden=false};
+$('#sv').onclick=async()=>{const v=$('#ta').value.trim()||DEF;$('#bio').textContent=v;await put('bio',v);$('#cn').click()};
+const SITES=[['Otakudesu','https://otakudesu.blog/','otaku'],['NontonAnimeID','https://s13.nontonanimeid.boats/','nao'],['Nexus','https://nexus-sealyn-ai-deve-m9l5.bolt.host/'],['MYD21','https://myd21.com/','myd']];
+let useProxy=false;fetch('/p/_ping').then(r=>{useProxy=r.ok}).catch(()=>{});
+const tabs=$('#tabs'),box=$('#sites');
+function pick(i){
+  tabs.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-selected',j===i+1));
+  $('#pro').hidden=i!==-1;box.hidden=i===-1;
+  [...box.children].forEach((w,j)=>w.hidden=j!==i);
+  if(i>=0){const f=box.children[i].querySelector('iframe');if(!f.getAttribute('src'))f.src=useProxy&&SITES[i][2]?'/p/'+SITES[i][2]+'/':SITES[i][1]}
+}
+['Profil',...SITES.map(x=>x[0])].forEach((n,j)=>{const b=document.createElement('button');b.setAttribute('role','tab');b.textContent=n;b.onclick=()=>pick(j-1);tabs.append(b)});
+SITES.forEach(([n,u])=>{
+  const w=document.createElement('div');w.hidden=true;
+  w.innerHTML='<iframe class="frame" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-modals" allow="fullscreen; autoplay" referrerpolicy="no-referrer" allowfullscreen></iframe><p class="note">Pop up iklan dan pengalihan halaman diblokir. Kotak kosong atau situs tidak bisa dipakai? Situs ini mungkin menolak dibuka di dalam halaman. <button class="btn alt">Buka di tab baru</button></p>';
+  w.querySelector('iframe').title=n;w.querySelector('button').onclick=()=>realOpen(u,'_blank','noopener');box.append(w);
+});
+pick(-1);
+</script>
+</body>
+</html>
